@@ -1,0 +1,2 @@
+#Set this to true if you want existing team members to be able to add other members. This overrides any permissions.
+allowExistingMembersToAdd: false

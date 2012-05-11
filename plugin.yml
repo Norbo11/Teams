@@ -1,0 +1,32 @@
+name: Teams
+description: 'A simple competition managment plugin for Bukkit.'
+version: 1.0
+main: com.github.norbo11.teams.Teams
+commands:
+    team:
+        description: 'Controls the Teams plugin.'
+        usage: 'Usage: /<command>'
+permissions:
+    teams.*:
+        children:
+            teams.view: true
+            teams.create: true
+            teams.delete: true
+            teams.modify: true
+            teams.reload: true
+        default: false
+    teams.view:
+        description: 'Allows you to view created teams.'
+        default: false
+    teams.create:
+        description: 'Allows you to create teams.'
+        default: false
+    teams.delete:
+        description: 'Allows you to delete teams.'
+        default: false
+    teams.modify:
+        description: 'Allows you to modify teams.'
+        default: false
+    teams.reload:
+        description: 'Allows you to reload teams.'
+        default: false
