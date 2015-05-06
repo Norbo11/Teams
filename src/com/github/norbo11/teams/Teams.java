@@ -1,29 +1,20 @@
 package com.github.norbo11.teams;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Logger;
 
 import org.bukkit.ChatColor;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class Teams extends JavaPlugin
 {
 
-    // Methods
+    // Listeners
     ListenerCommandExecutor commandExecutor;
-    Methods methods;
-    MethodsError methodsError;
-    MethodsFile methodsFile;
     ListenerGeneral listenerGeneral;
-
-    Logger log;
-    String pluginTag = ChatColor.GOLD + "[Teams] ";
-    File pluginDir;
-    File pluginConfig;
-    String version = "1.0";
-    public List<Team> teams = new ArrayList<Team>();
 
     // Colours
     ChatColor red = ChatColor.RED;
@@ -32,22 +23,19 @@ public class Teams extends JavaPlugin
     ChatColor gold = ChatColor.GOLD;
     ChatColor white = ChatColor.WHITE;
 
-    public String lineString = "-------------------------";
+    Logger log;
+    String lineString = "-------------------------";
+    String pluginTag = ChatColor.GOLD + "[Teams] ";
+    String version;
+    File filePluginDir;
+    File filePluginConfig;
+    File fileTeamsConfig;
+    YamlConfiguration configTeams;
 
-    public Logger getLog()
-    {
-        return log;
-    }
-
-    public File getPluginDir()
-    {
-        return pluginDir;
-    }
-
-    public String getPluginTag()
-    {
-        return pluginTag;
-    }
+    static Teams p;
+    Map<String, String> playerGroupChoice = new HashMap<String, String>();
+    Map<String, String> playerChatChoice = new HashMap<String, String>();
+    Map<String, String> invites = new HashMap<String, String>();
 
     public void onDisable()
     {
@@ -56,33 +44,58 @@ public class Teams extends JavaPlugin
 
     public void onEnable()
     {
+        version = getDescription().getVersion();
         // Create logger
         log = getLogger();
 
-        pluginDir = getDataFolder();
-        pluginConfig = new File(pluginDir, "config.yml");
+        filePluginDir = getDataFolder();
+        filePluginConfig = new File(filePluginDir, "config.yml");
+        fileTeamsConfig = new File(filePluginDir, "teams.yml");
 
-        // Create classes
+        try
+        {   
+            // Make plugin directory
+            if (!filePluginDir.exists()) filePluginDir.mkdir();
+            
+            // Make teams.yml
+            if (!fileTeamsConfig.exists()) fileTeamsConfig.createNewFile();
+            
+            // Load teams.yml 
+            configTeams = YamlConfiguration.loadConfiguration(fileTeamsConfig);
+
+            // Make config
+            if (!filePluginConfig.exists())
+            {
+                getConfig().options().copyDefaults();
+                saveDefaultConfig();
+            }
+            
+            //Inform the player to change the config if "Member1" exists as a default value in the config
+            if (getConfig().getStringList("Default Team.managers").contains("Manager1")) log.info("Plugin has detected that you have not changed config.yml to suit your own needs! To get rid of this message, remove 'Manager1' as a default manager of each team.");
+        } catch (Exception e)
+        {
+            terminate("An error has occurred while creating files!", e);
+            return;
+        }
+
+        // Create listeners
         commandExecutor = new ListenerCommandExecutor(this);
-        methods = new Methods(this);
-        methodsError = new MethodsError(this);
-        methodsFile = new MethodsFile(this);
         listenerGeneral = new ListenerGeneral(this);
         getServer().getPluginManager().registerEvents(listenerGeneral, this);
 
         // Set executors
-        getCommand("team").setExecutor(commandExecutor);
+        getCommand("teams").setExecutor(commandExecutor);
+        getCommand("tc").setExecutor(commandExecutor);
 
-        // Make config
-        if (!pluginConfig.exists())
-        {
-            log.info("Creating config file...");
-            getConfig().options().copyDefaults();
-            saveDefaultConfig();
-        }
-
-        methods.getTeams();
+        p = this;
 
         log.info("Teams v" + version + " enabled!");
+    }
+
+    public void terminate(String message, Exception e)
+    {
+        log.severe(message);
+        if (e != null) e.printStackTrace();
+        getServer().getPluginManager().disablePlugin(this);
     }
 }

@@ -1,2 +1,13 @@
-#Set this to true if you want existing team members to be able to add other members. This overrides any permissions.
-allowExistingMembersToAdd: false
+#This is a default team - this is how a new team will look like as soon as it is created.
+Default Team:
+   points: 0
+   #Managers can invite members. IMPORTANT: If you don't want to have any default managers, leave this field as 'managers: []'
+   managers:
+   - Manager1
+   - Manager2
+   settings:
+   #Leave as -creator- if you want each created team's leader to be the creator of the team
+     leader: -creator-
+     tag: '&b[Tag]'
+     displayTag: false
+     noMemberPVP: false

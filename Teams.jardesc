@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="WINDOWS-1252" standalone="no"?>
 <jardesc>
-    <jar path="C:/Users/Norbo11/Desktop/BukkitDev/CraftBukkit/plugins/Teams.jar"/>
-    <options buildIfNeeded="true" compress="true" descriptionLocation="/Teams/Teams.jardesc" exportErrors="true" exportWarnings="true" includeDirectoryEntries="false" overwrite="true" saveDescription="true" storeRefactorings="false" useSourceFolders="false"/>
+    <jar path="D:/Dev/CraftBukkit/plugins/Teams.jar"/>
+    <options buildIfNeeded="true" compress="true" descriptionLocation="/Teams/Teams.jardesc" exportErrors="true" exportWarnings="true" includeDirectoryEntries="true" overwrite="true" saveDescription="true" storeRefactorings="false" useSourceFolders="false"/>
     <storedRefactorings deprecationInfo="true" structuralOnly="false"/>
     <selectedProjects/>
     <manifest generateManifest="true" manifestLocation="" manifestVersion="1.0" reuseManifest="false" saveManifest="false" usesManifest="true">
-        <sealing sealJar="false">
+        <sealing sealJar="true">
             <packagesToSeal/>
             <packagesToUnSeal/>
         </sealing>
     </manifest>
     <selectedElements exportClassFiles="true" exportJavaFiles="false" exportOutputFolder="false">
         <file path="/Teams/plugin.yml"/>
-        <file path="/Teams/.project"/>
         <javaElement handleIdentifier="=Teams/src"/>
         <file path="/Teams/.classpath"/>
         <file path="/Teams/config.yml"/>
